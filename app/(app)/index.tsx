@@ -17,7 +17,7 @@ export default function Index() {
             style={styles.button} 
             onPress={signout}
             >
-            <Text style={styles.buttonText}>SignOut</Text>
+            <Text style={styles.buttonText}>Sign Out</Text>
         </TouchableOpacity>
         {session && ( <View style={styles.container}>
            <TextCustom fontSize={22}>Hello {user.name}!</TextCustom>
@@ -25,7 +25,7 @@ export default function Index() {
               <Text style={styles.text}> This app will help you organize and manage your tasks and responsibilities. It allows you to create, edit, and delete tasks, set deadlines, and prioritize items effectively.</Text>
        {/*You can include the todo functionalies inside the index.tsx or you can create a separe screen and access via a link as below*/}
       <Link href="../todos" style={styles.button}>
-      <Text style={styles.buttonText}>Access your To-Dos</Text>
+      <Text style={styles.buttonText}>Access Your Alerts</Text>
     </Link>
      </View>
     
