@@ -18,10 +18,15 @@ export default function ItemModal() {
   const [severity, setSeverity] = useState("");
   const [status, setStatus] = useState("");
   const [reportedBy, setReportedBy] = useState("");
+  const [reportedAt, setReportedAt] = useState("");
   const [editMode, setEditMode] = useState(false);
 
   // ✅ Load data if editing an existing task
   useEffect(() => {
+    const now = new Date();
+    const formattedDate = now.toLocaleString();
+    setReportedAt(formattedDate);
+
     if (id) {
       setEditMode(true);
       loadData();
@@ -38,6 +43,7 @@ export default function ItemModal() {
             severity: string; 
             status: string; 
             reported_by: string;
+            reported_at: string;
         }>(
             "SELECT * FROM tasks WHERE id = ?", 
             [id ? parseInt(id as string, 10) : 0]
@@ -50,13 +56,13 @@ export default function ItemModal() {
             setSeverity(result.severity);
             setStatus(result.status);
             setReportedBy(result.reported_by);
+            setReportedAt(result.reported_at);
         }
     } catch (error) {
         console.error("❌ Error loading item:", error);
         Alert.alert("Error", "Failed to load the Task");
     }
 };
-
 
 const handleSave = async () => {
   if (!name.trim() || !description.trim() || !incidentType.trim() || !severity.trim() || !status.trim() || !reportedBy.trim()) {
@@ -67,13 +73,13 @@ const handleSave = async () => {
   try {
     if (editMode) {
       await database.runAsync(
-        "UPDATE tasks SET name = ?, description = ?, incident_type = ?, severity = ?, status = ?, reported_by = ? WHERE id = ?",
-        [name.trim(), description.trim(), incidentType.trim(), severity.trim(), status.trim(), reportedBy.trim(), Number(id)] // ✅ Ensure id is a number
+        "UPDATE tasks SET name = ?, description = ?, incident_type = ?, severity = ?, status = ?, reported_by = ?, reported_at = ? WHERE id = ?",
+        [name.trim(), description.trim(), incidentType.trim(), severity.trim(), status.trim(), reportedBy.trim(), reportedAt, Number(id)]
       );
     } else {
       await database.runAsync(
-        "INSERT INTO tasks (name, description, completed, incident_type, severity, status, reported_by) VALUES (?, ?, 0, ?, ?, ?, ?)",
-        [name.trim(), description.trim(), incidentType.trim(), severity.trim(), status.trim(), reportedBy.trim()]
+        "INSERT INTO tasks (name, description, completed, incident_type, severity, status, reported_by, reported_at) VALUES (?, ?, 0, ?, ?, ?, ?, ?)",
+        [name.trim(), description.trim(), incidentType.trim(), severity.trim(), status.trim(), reportedBy.trim(), reportedAt]
       );
     }
 
@@ -86,7 +92,6 @@ const handleSave = async () => {
     Alert.alert("Error", "Failed to save Task");
   }
 };
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -103,6 +108,7 @@ const handleSave = async () => {
           <TextInput label="Severity" value={severity} onChangeText={setSeverity} />
           <TextInput label="Status" value={status} onChangeText={setStatus} />
           <TextInput label="Reported By" value={reportedBy} onChangeText={setReportedBy} />
+          <TextInput label="Reported At" value={reportedAt} editable={false} />
         </View>
 
         <View style={styles.buttonContainer}>
@@ -131,4 +137,3 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-

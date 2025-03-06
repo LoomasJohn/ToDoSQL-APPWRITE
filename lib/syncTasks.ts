@@ -11,9 +11,27 @@ export async function syncTasks(database: SQLiteAnyDatabase) {
       const user = await account.get();
       const userId = user.$id;
 
+      //await database.runAsync("DROP TABLE IF EXISTS tasks");
+
+      // ✅ Ensure the tasks table exists
+      await database.runAsync(`
+        CREATE TABLE IF NOT EXISTS tasks (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL,
+          description TEXT NOT NULL,
+          completed INTEGER DEFAULT 0,
+          incident_type TEXT,
+          severity TEXT,
+          status TEXT,
+          reported_by TEXT,
+          reported_at TEXT DEFAULT '',
+          appwrite_id TEXT DEFAULT NULL
+        )
+      `);
+
       // ✅ Get all local tasks that haven't been synced
       const localTasks = await database.getAllAsync(
-          "SELECT id, name, description, completed, incident_type, severity, status, reported_by, created_at FROM tasks WHERE appwrite_id IS NULL"
+          "SELECT id, name, description, completed, incident_type, severity, status, reported_by, reported_at FROM tasks WHERE appwrite_id IS NULL"
       );    
 
       for (const task of localTasks) {
@@ -35,7 +53,7 @@ export async function syncTasks(database: SQLiteAnyDatabase) {
                   severity: task.severity,
                   status: task.status,
                   reported_by: task.reported_by,
-                  created_at: task.created_at || new Date().toISOString(),
+                  reported_at: task.reported_at || new Date().toISOString(),
               }
           );
 
