@@ -20,7 +20,7 @@ const signin = () => {
 
       <View  style={styles.container}>
         <View>
-          <TextCustom style={styles.headline} fontSize={72}>SignIn</TextCustom>
+        <TextCustom style={[styles.headline, { color: '#6750a4' }]} fontSize={72}>Sign In</TextCustom>
 
           <TextCustom>Email:</TextCustom>
           <TextInput 
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     borderColor:"grey"
   },
   button: {
-    backgroundColor: 'black',
+    backgroundColor: '#6750a4',
     padding: 12,
     borderRadius: 6,
     alignItems: 'center',

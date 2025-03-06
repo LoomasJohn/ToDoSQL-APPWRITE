@@ -17,15 +17,15 @@ export default function Index() {
             style={styles.button} 
             onPress={signout}
             >
-            <Text style={styles.buttonText}>SignOut</Text>
+            <Text style={styles.buttonText}>Sign Out</Text>
         </TouchableOpacity>
         {session && ( <View style={styles.container}>
            <TextCustom fontSize={22}>Hello {user.name}!</TextCustom>
             <View style={styles.container}>
-              <Text style={styles.text}> This app will help you organize and manage your tasks and responsibilities. It allows you to create, edit, and delete tasks, set deadlines, and prioritize items effectively.</Text>
+              <Text style={styles.text}> This app will help you stay up to date with cyber incidents. It allows you to create, edit, and delete alerts, set status, and prioritize incidents by severity.</Text>
        {/*You can include the todo functionalies inside the index.tsx or you can create a separe screen and access via a link as below*/}
       <Link href="../todos" style={styles.button}>
-      <Text style={styles.buttonText}>Access your To-Dos</Text>
+      <Text style={styles.buttonText}>Access Your Alerts</Text>
     </Link>
      </View>
     
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     paddingVertical:20
   },
     button: {
-      backgroundColor: 'black',
+      backgroundColor: '#6750a4',
       padding: 12,
       borderRadius: 6,
       alignItems: 'center',
